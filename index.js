@@ -9,9 +9,13 @@ var iTracker = function () {
 //
 var cookie = require('cookies');
 var Store = require('local-store');
+var nameStore = require('name-store');
 var Bbs = require('seedit-bbs');
+var jsonp = require('./lib/jsonp');
 
 // md5 用以检测数据是否有变化
+
+// beacon 打点脚本
 
 iTracker.prototype.initUuid = function () {
     /**
@@ -96,7 +100,6 @@ if (Store.get('uid') && Store.get('log_alias') !== '3') {
     });
     Store.set('log_alias', '3');
 }
-
 
 
 /**

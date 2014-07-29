@@ -21,7 +21,8 @@
       "visit-from": "0.0.1",
       "cookies": "1.1.0",
       "seedit-bbs": "1.0.3",
-      "query-string": "1.0.0"
+      "query-string": "1.0.0",
+      "name-store": "1.1.0"
     },
     "devDependencies": {
       "expect.js": "0.3.1"
@@ -29,6 +30,7 @@
     "engines": {
       "seajs": "2.2.1"
     },
-    "tests": "tests/*.js"
+    "tests": "tests/*.js",
+    "buildArgs": "--include all"
   }
 }

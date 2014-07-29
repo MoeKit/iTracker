@@ -1,3 +1,6 @@
+// 淘宝购物车数量
+// 淘宝购物车前5个
+
 module.exports = function () {
     window.jQuery.ajax({
         url: 'http://cart.taobao.com/top_cart_quantity.htm?&appid=6',
