@@ -17,7 +17,6 @@
     "main": "index.js",
     "dependencies": {
       "cookie-store": "0.0.9",
-      "uuid": "1.4.1",
       "local-store": "1.3.16",
       "visit-from": "0.0.1",
       "cookies": "1.1.0",

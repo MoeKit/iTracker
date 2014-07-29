@@ -1,4 +1,6 @@
-var iTracker;
+var iTracker = function () {
+
+};
 
 // 不依赖于本地存储去判断是否为老用户，靠服务端跑数据确定
 
@@ -8,43 +10,62 @@ var iTracker;
 var cookie = require('cookies');
 var Store = require('local-store');
 var Bbs = require('seedit-bbs');
-/**
- * -----------------------------------
- * 确认uuid已经存在
- * -----------------------------------
- */
-var uuid = require('uuid');
-var getUuidByCookie = function () {
-    return cookie.get('suuid', {
-        domain: 'seedit.com',
-        path: '/'
-    });
-};
-var setUuidByCookie = function (uuid) {
-    cookie.set('suuid', uuid, {
-        domain: 'seedit.com',
-        expires: 365,
-        path: '/'
-    });
-}
 
-var hasUuid = Store.get('uuid') || getUuidByCookie();
+// md5 用以检测数据是否有变化
 
-if (hasUuid) {
-    // 没有设置cookie
-    if (!getUuidByCookie()) {
+iTracker.prototype.initUuid = function () {
+    /**
+     * -----------------------------------
+     * 确认uuid已经存在
+     * uuid以localStorage为准，向cookie同步
+     * -----------------------------------
+     */
+    var uuid = function () {
+        // http://www.ietf.org/rfc/rfc4122.txt
+        var s = [];
+        var hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 36; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+        s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+        s[8] = s[13] = s[18] = s[23] = "-";
+        var uuid = s.join("");
+        return uuid;
+    };
+
+    var getUuidByCookie = function () {
+        return cookie.get('suuid', {
+            domain: 'seedit.com',
+            path: '/'
+        });
+    };
+    var setUuidByCookie = function (uuid) {
+        cookie.set('suuid', uuid, {
+            domain: 'seedit.com',
+            expires: 365,
+            path: '/'
+        });
+    }
+
+    var hasUuid = Store.get('uuid') || getUuidByCookie();
+
+    if (hasUuid) {
+        // 没有设置cookie
+        if (!getUuidByCookie()) {
+            setUuidByCookie(hasUuid);
+        }
+    } else {
+        // 没有uuid设置时
+        hasUuid = uuid();
         setUuidByCookie(hasUuid);
     }
-} else {
-    // 没有uuid设置时
-    hasUuid = uuid.v4();
-    setUuidByCookie(hasUuid);
-}
 
 // 顺便保存一份到store
-if (!Store.get('uuid') || Store.get('uuid') !== hasUuid) {
-    Store.set('uuid', hasUuid);
-}
+    if (!Store.get('uuid') || Store.get('uuid') !== hasUuid) {
+        Store.set('uuid', hasUuid);
+    }
+};
 
 
 /**
@@ -53,11 +74,12 @@ if (!Store.get('uuid') || Store.get('uuid') !== hasUuid) {
  * -----------------------------------
  */
 var queryString = require('query-string');
-var beacon = function (event,params) {
-    params.event = event;
+var beacon = function (params) {
     params.uuid = hasUuid;
-    params.time = new Date().getTime();
-    new Image().src = 'http://106.3.38.38:8004/api/v2/log?' + queryString.stringify(params);
+    params.time = new Date().getTime();// identiry current action time
+    params.re = document.referrer;
+    params.url = document.location.href;
+    new Image().src = 'http://beacon.raosee.com/x.gif?' + queryString.stringify(params);
 };
 
 /**
@@ -66,16 +88,15 @@ var beacon = function (event,params) {
  * -----------------------------------
  */
 
-if (Store.get('uid') && !Store.get('log_alias')) {
+if (Store.get('uid') && Store.get('log_alias') !== '3') {
     beacon({
         event: 'alias',
-        detail: {
-            uuid: hasUuid,
-            uid: Store.get('uid')
-        }
+        uuid: hasUuid,
+        uid: Store.get('uid')
     });
-    Store.set('log_alias', '1');
+    Store.set('log_alias', '3');
 }
+
 
 
 /**
@@ -86,9 +107,7 @@ if (Store.get('uid') && !Store.get('log_alias')) {
 if (Bbs.page.isNode()) {
     beacon({
         event: 'view_node',
-        detail: {
-            tid: Bbs.page.getFid()
-        }
+        fid: Bbs.page.getFid()
     });
 }
 
@@ -101,28 +120,16 @@ if (Bbs.page.isNode()) {
 if (Bbs.page.isTopic()) {
     beacon({
         event: 'view_topic',
-        detail: {
-            tid: Bbs.page.getTid()
-        }
+        tid: Bbs.page.getTid(),
+        fid: Bbs.page.getFid()
     });
 }
 
-/**
- * -----------------------------------
- * 发送搜索词 search
- * 搜索引擎，站内搜索，wap搜索
- * -----------------------------------
- */
 
-var Visitor = require('visit-from');
+var tracker = new iTracker();
+// init uuid
+tracker.initUuid();
 
-beacon({
-    event: 'search',
-    detail: {
-        key: Visitor.key,
-        domain: Visitor.domain
-    }
-});
+exports = {};
 
 
-module.exports = iTracker;
