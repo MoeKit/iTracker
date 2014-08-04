@@ -5,7 +5,9 @@
 ## Normal usage
 
 ````javascript
-seajs.use('index', function(iTracker) {
-
+seajs.use('index', function(tracker) {
+  tracker.init({
+  cookieDomain:'seedit.dev'
+  });
 });
 ````

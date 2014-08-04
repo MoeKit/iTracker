@@ -22,7 +22,8 @@
       "cookies": "1.1.0",
       "seedit-bbs": "1.0.3",
       "query-string": "1.0.0",
-      "name-store": "1.1.0"
+      "name-store": "1.1.0",
+      "cookie": "1.1.0"
     },
     "devDependencies": {
       "expect.js": "0.3.1"
