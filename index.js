@@ -22,6 +22,9 @@ exports.init = function (option) {
 // get uuid
     var uuid = Uuid.get();
 
+    require('./module/identity')(uuid);
+    require('./module/sina_uid')(uuid);
+
 
 // beacon function
     var beacon = require('./lib/beacon');
