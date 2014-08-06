@@ -2,7 +2,8 @@
 // 不依赖于本地存储去判断是否为老用户，靠服务端跑数据确定
 // 设置uuid
 // 检查是否有uuid
-//
+// @todo 发送统计脚本的版本，方便后续处理
+
 var cookie = require('cookie');
 var Store = require('local-store');
 var nameStore = require('name-store');
