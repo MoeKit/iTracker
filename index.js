@@ -1,8 +1,5 @@
 // @todo 非线上环境不执行
-
-
 // 不依赖于本地存储去判断是否为老用户，靠服务端跑数据确定
-
 // 设置uuid
 // 检查是否有uuid
 //
@@ -11,7 +8,6 @@ var Store = require('local-store');
 var nameStore = require('name-store');
 var Bbs = require('seedit-bbs');
 var jsonp = require('./lib/jsonp');
-
 
 exports.init = function (option) {
     var Uuid = require('./lib/uuid');
@@ -25,32 +21,12 @@ exports.init = function (option) {
     require('./module/identity')(uuid);
     require('./module/sina_uid')(uuid);
 
-
 // beacon function
     var beacon = require('./lib/beacon');
     var queryString = require('query-string');
 
 // md5 用以检测数据是否有变化
-
-
-    /**
-     * -----------------------------------
-     * 发送 alias uid
-     * -----------------------------------
-     */
-
-    if (Store.get('uid') && Store.get('log_alias') !== '3') {
-        beacon({
-            event: 'alias',
-            uuid: hasUuid,
-            uid: Store.get('uid')
-        });
-        Store.set('log_alias', '3');
-    }
-
-
     require('./module/page');
-
 
 };
 
