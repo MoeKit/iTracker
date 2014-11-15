@@ -7,7 +7,7 @@
 ````javascript
 seajs.use('index', function(tracker) {
   tracker.init({
-  cookieDomain:'seedit.dev'
+  cookieDomain:'seedit.com'
   });
 });
 ````

@@ -14,7 +14,7 @@ module.exports = function(uuid) {
                     store.set('identify', true);
                 });
             } else {
-                window.console && console.log('no uid');
+                // no uid
             }
         });
     }

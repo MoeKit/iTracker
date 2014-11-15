@@ -1,5 +1,5 @@
 // @todo 非线上环境不执行
-// 不依赖于本地存储去判断是否为老用户，靠服务端跑数据确定
+// <delete>不依赖于本地存储去判断是否为老用户，靠服务端跑数据确定</delete>
 // 设置uuid
 // 检查是否有uuid
 // @todo 发送统计脚本的版本，方便后续处理
@@ -12,17 +12,18 @@ var jsonp = require('./lib/jsonp');
 
 exports.init = function (option) {
     var Uuid = require('./lib/uuid');
-// initialize uuid
+    // initialize uuid
     Uuid.init({
-        cookieDomain: option.cookieDomain || 'seedit.com'
+        cookieDomain: option.cookieDomain || 'bozhong.com'
     });
-// get uuid
+    // get uuid
     var uuid = Uuid.get();
 
     require('./module/identity')(uuid);
     require('./module/sina_uid')(uuid);
+    require('./module/session').init();
 
-// beacon function
+    // beacon function
     var beacon = require('./lib/beacon');
     var queryString = require('query-string');
 
