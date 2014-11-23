@@ -3,23 +3,11 @@
 
 var BBS = require('seedit-bbs');
 var beacon = require('../lib/beacon');
-// 帖子页
-if (BBS.page.isTopic()) {
-    beacon({
-        event: 'view_topic',
-        tid: BBS.page.getTid(),
-        fid: BBS.page.getFid()
-    });
-// 列表页
-} else if (BBS.page.isNode()) {
-    beacon({
-        event: 'view_node',
-        fid: BBS.page.getFid()
-    });
-// 其他页面
-} else {
-    beacon({
-        event:'vp'
-    });
-}
 
+module.exports = function(_) {
+    beacon({
+        ev: 'vp',
+        sid: _.sid,
+        uuid:_.uuid
+    });
+};

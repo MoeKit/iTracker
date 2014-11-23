@@ -9,8 +9,10 @@ var Store = require('local-store');
 var nameStore = require('name-store');
 var Bbs = require('seedit-bbs');
 var jsonp = require('./lib/jsonp');
+var Session = require('./module/session');
+var Hub = require('./module/hub');
 
-exports.init = function (option) {
+exports.init = function(option) {
     var Uuid = require('./lib/uuid');
     // initialize uuid
     Uuid.init({
@@ -18,18 +20,28 @@ exports.init = function (option) {
     });
     // get uuid
     var uuid = Uuid.get();
-
+    Hub.set('uuid',uuid);
     require('./module/identity')(uuid);
     require('./module/sina_uid')(uuid);
-    require('./module/session').init();
+
+    // init session
+    var session = new Session({
+        domain: option.cookieDomain
+    }).init();
+
+    var sid = session.getSessionId();
+    Hub.set('sid',sid);
 
     // beacon function
     var beacon = require('./lib/beacon');
     var queryString = require('query-string');
 
-// md5 用以检测数据是否有变化
-    require('./module/page');
-
+    // md5 用以检测数据是否有变化
+    require('./module/page')({
+        sid: sid,
+        uuid: uuid
+    });
 };
 
 
+exports.track = require('./module/tracker');

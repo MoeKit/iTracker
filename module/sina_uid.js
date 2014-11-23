@@ -4,19 +4,19 @@ var beacon = require('../lib/beacon');
 var uid = require('../lib/uid');
 var store = require('local-store');
 var jsonp = require('../lib/jsonp');
-module.exports = function (uuid) {
-    if (!store.get('sina') && document.location.href.indexOf('m.seedit.com') === -1) {
-        jsonp(url, {}, 'callback', function (data) {
+module.exports = function(uuid) {
+    if (!store.get('_sina') && document.location.href.indexOf('m.bozhong.com') === -1) {
+        jsonp(url, {}, 'callback', function(data) {
             if (data.code === 1) {
                 beacon({
-                    event: 'sina',
+                    ev: 'sina',
                     uuid: uuid,
-                    sid: data.data.uid
-                }, function () {
-                    store.set('sina', true);
+                    sina_id: data.data.uid
+                }, function() {
+                    store.set('_sina', data.data.uid);
                 });
             } else {
-                window.console && console.log('no sina id ');
+                // no sina id
             }
         });
     }
