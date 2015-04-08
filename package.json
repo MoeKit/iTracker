@@ -1,6 +1,6 @@
 {
   "name": "i-tracker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "keywords": [],
   "homepage": "",
@@ -15,6 +15,7 @@
   "licenses": "MIT",
   "spm": {
     "main": "index.js",
+    "output": ["lib/uuid.js"],
     "dependencies": {
       "cookie-store": "0.0.9",
       "local-store": "1.3.16",

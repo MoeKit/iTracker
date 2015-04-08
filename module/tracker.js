@@ -5,11 +5,15 @@ var beacon = require('../lib/beacon');
 var querystring = require('query-string');
 var Hub = require('../module/hub');
 module.exports = function(data) {
-
-	beacon({
-		ev: 'event',
-		data: querystring.stringify(data),
-		sid: Hub.get('sid'),
-		uuid: Hub.get('uuid')
-	});
+	return function(event, _data) {
+		_data.c = Hub.get('sid');
+		_data.u = location.href;
+		beacon({
+			e: event,
+			i: {
+				uuid: Hub.get('uuid')
+			},
+			d: _data
+		});
+	};
 };

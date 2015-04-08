@@ -7,9 +7,11 @@ module.exports = function(uuid) {
         uid.get(function(uid) {
             if (uid) {
                 beacon({
-                    ev: 'identify',
-                    uuid: uuid,
-                    uid: uid
+                    e: '$identify',
+                    i: {
+                        uuid: uuid,
+                        uid: uid
+                    }
                 }, function() {
                     store.set('_identify', true);
                 });

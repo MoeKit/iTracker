@@ -5,9 +5,17 @@ var BBS = require('seedit-bbs');
 var beacon = require('../lib/beacon');
 
 module.exports = function(_) {
-    beacon({
-        ev: 'vp',
-        sid: _.sid,
-        uuid:_.uuid
-    });
+	var data = {
+		e: '$page',
+		d: {
+			c: _.sid,
+			r: document.referrer,
+			u: document.location.href
+		},
+		i: {
+			uuid: _.uuid
+		}
+	};
+	window.fid && (data.fid = window.fid);
+	beacon(data);
 };

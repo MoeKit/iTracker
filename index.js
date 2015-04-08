@@ -20,7 +20,7 @@ exports.init = function(option) {
     });
     // get uuid
     var uuid = Uuid.get();
-    Hub.set('uuid',uuid);
+    Hub.set('uuid', uuid);
     require('./module/identity')(uuid);
     require('./module/sina_uid')(uuid);
 
@@ -30,11 +30,12 @@ exports.init = function(option) {
     }).init();
 
     var sid = session.getSessionId();
-    Hub.set('sid',sid);
+    Hub.set('sid', sid);
 
     // beacon function
     var beacon = require('./lib/beacon');
     var queryString = require('query-string');
+
 
     // md5 用以检测数据是否有变化
     require('./module/page')({
@@ -44,4 +45,7 @@ exports.init = function(option) {
 };
 
 
-exports.track = require('./module/tracker');
+exports.track = require('./module/tracker')({
+    sid: Hub.get('sid'),
+    uuid: Hub.get('uuid')
+});
