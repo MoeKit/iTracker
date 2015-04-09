@@ -2,7 +2,7 @@
 
 ---
 
-[![spm version](https://moekit.timo.today/badge/i-tracker)](http://spmjs.io/package/i-tracker)
+[![spm version](https://moekit.timo.today/badge/iseekr-tracker)](http://spmjs.io/package/i-tracker)
 
 An awesome spm package!
 
