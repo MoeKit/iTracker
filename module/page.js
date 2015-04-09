@@ -9,8 +9,8 @@ module.exports = function(_) {
 		e: '$page',
 		d: {
 			c: _.sid,
-			r: document.referrer,
-			u: document.location.href
+			r: document.referrer.replace('http://',''),
+			u: document.location.href.replace('http://','')
 		},
 		i: {
 			uuid: _.uuid

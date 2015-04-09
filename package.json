@@ -15,7 +15,9 @@
   "licenses": "MIT",
   "spm": {
     "main": "index.js",
-    "output": ["lib/uuid.js"],
+    "output": [
+      "lib/uuid.js"
+    ],
     "dependencies": {
       "cookie-store": "0.0.9",
       "local-store": "1.3.16",
@@ -24,7 +26,8 @@
       "seedit-bbs": "1.0.3",
       "query-string": "1.0.0",
       "name-store": "1.1.0",
-      "cookie": "1.1.0"
+      "cookie": "1.1.0",
+      "fingerprintjs": "0.5.3"
     },
     "devDependencies": {
       "expect.js": "0.3.1"
