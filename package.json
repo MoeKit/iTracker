@@ -1,5 +1,5 @@
 {
-  "name": "i-tracker",
+  "name": "iseekr-tracker",
   "version": "0.0.2",
   "description": "",
   "keywords": [],
@@ -7,7 +7,7 @@
   "author": "",
   "repository": {
     "type": "git",
-    "url": "git://github.com/lizheng/iTracker.git"
+    "url": "git@github.com:iseekr/iseekr-tracker.git"
   },
   "bugs": {
     "url": ""
