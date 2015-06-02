@@ -12,8 +12,14 @@ var jsonp = require('./lib/jsonp');
 var Session = require('./module/session');
 var Hub = require('./module/hub');
 
+
 exports.init = function(option) {
     var Uuid = require('./lib/uuid');
+    // set appid
+    if (!option.appid) {
+        throw 'no appid specified';
+    }
+    Hub.set('appid', option.appid);
     // initialize uuid
     Uuid.init({
         cookieDomain: option.cookieDomain || 'bozhong.com'
@@ -23,6 +29,16 @@ exports.init = function(option) {
     Hub.set('uuid', uuid);
     require('./module/identity')(uuid);
     require('./module/sina_uid')(uuid);
+
+    // get uid
+    var search = location.search;
+    if (search) {
+        var queryString = require('query-string');
+        var parse = queryString.parse(search.replace('?', ''));
+        if (parse.cuid) {
+            Hub.set('uid', parse.cuid);
+        }
+    }
 
     // init session
     var session = new Session({
@@ -36,12 +52,13 @@ exports.init = function(option) {
     var beacon = require('./lib/beacon');
     var queryString = require('query-string');
 
-
-    // md5 用以检测数据是否有变化
-    require('./module/page')({
-        sid: sid,
-        uuid: uuid
-    });
+    // if track page
+    if (option.trackPage !== false) {
+        require('./module/page')({
+            sid: sid,
+            uuid: uuid
+        });
+    }
 };
 
 

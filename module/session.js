@@ -48,8 +48,9 @@ session.prototype.setId = function() {
 };
 
 session.prototype.getSessionId = function() {
-	return this.store.get('sid');
-	return this;
+	var sid = this.store.get('sid');
+	var date = new Date(sid*1);
+	return date.getHours()+''+date.getMinutes()+date.getSeconds();
 };
 
 module.exports = session;
